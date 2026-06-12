@@ -3,938 +3,834 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>⏱️ Escape Room: Lab Informatika</title>
+  <title>🏆 Escape Room: Lab Informatika</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #0a0f1a;
+      --cyan: #00e5ff;
+      --green: #00ff88;
+      --red: #ff4757;
+      --gold: #ffd700;
+      --purple: #a855f7;
     }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
-      background: linear-gradient(160deg, #061520 0%, #0d2538 100%);
+      background: var(--bg);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 10px;
-      margin: 0;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
-
-    .game-container {
+    .game-wrapper {
       width: 100%;
       max-width: 430px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-radius: 38px;
-      padding: 18px 14px 22px;
-      box-shadow: 0 30px 55px rgba(0, 0, 0, 0.75), inset 0 0 20px rgba(0, 200, 255, 0.2);
-      border: 1px solid rgba(0, 210, 255, 0.3);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 32px;
+      padding: 16px 10px 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
       color: #e4f4ff;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      min-height: 500px;
     }
 
-    /* ========== SCREEN: REGISTRASI ========== */
-    .registration-screen {
+    /* ========== REGISTRATION ========== */
+    #regScreen {
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      padding: 10px 6px;
+      gap: 18px;
+      padding: 20px 8px;
     }
-
+    .reg-icon { text-align: center; font-size: 3.5rem; }
     .reg-title {
       text-align: center;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #00ccff;
-      text-shadow: 0 0 15px #00a6ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-
-    .reg-subtitle {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #a0c8e0;
-      margin-top: -10px;
-    }
-
     .reg-form {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      background: #0a1e30cc;
-      border-radius: 24px;
-      padding: 18px;
-      border: 1px solid #2c5877;
+      gap: 12px;
+      background: rgba(10,25,45,0.8);
+      border-radius: 20px;
+      padding: 18px 14px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
-
     .reg-form label {
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #b3dffc;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
-
     .reg-form input {
       background: #10273b;
       border: 2px solid #2c5a7a;
-      border-radius: 30px;
-      padding: 14px 18px;
-      font-size: 1rem;
-      color: white;
-      outline: none;
-      caret-color: #00ccff;
-      width: 100%;
-    }
-
-    .reg-form input:focus {
-      border-color: #00b7ff;
-      box-shadow: 0 0 12px #0077ff;
-    }
-
-    .reg-form input::placeholder {
-      color: #5a8099;
-    }
-
-    .start-btn {
-      background: linear-gradient(135deg, #00aa44, #006633);
-      border: none;
-      color: white;
-      font-weight: bold;
-      padding: 16px;
-      border-radius: 40px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 6px 0 #00331a, 0 10px 20px black;
-      border: 2px solid #00cc66;
-      letter-spacing: 1px;
-      transition: 0.1s linear;
-      touch-action: manipulation;
-    }
-
-    .start-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #00331a, 0 6px 14px black;
-    }
-
-    .start-btn:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .error-reg {
-      color: #ff8888;
-      font-size: 0.8rem;
-      text-align: center;
-      min-height: 18px;
-    }
-
-    /* ========== SCREEN: GAME ========== */
-    .game-screen {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .room-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(5, 18, 32, 0.8);
-      border-radius: 50px;
-      padding: 12px 20px;
-      border: 1px solid #00a6ff55;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .player-info {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      color: #9ac7e7;
-    }
-
-    .player-name-display {
-      font-weight: 700;
-      color: #ffd966;
-    }
-
-    .status-badge {
-      background: #00c8ff;
-      color: #001a26;
-      font-weight: bold;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-    }
-
-    .timer-box {
-      background: #0a1e30;
-      border-radius: 30px;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 2px solid #ffaa00;
-      font-weight: bold;
-      font-size: 1.5rem;
-      color: #ffcc66;
-    }
-
-    .timer-warning {
-      border-color: #ff4444 !important;
-      color: #ff7777 !important;
-      animation: pulse 0.7s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from { opacity: 1; }
-      to { opacity: 0.5; }
-    }
-
-    .door-visual {
-      background: #1a2f42;
-      border-radius: 24px;
-      padding: 5px;
-      border: 2px solid #3d627c;
-    }
-
-    .door {
-      background: radial-gradient(circle at 25% 25%, #4e7a9e, #0a1826);
-      border-radius: 20px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.8rem;
-      filter: drop-shadow(0 8px 14px black);
-      transition: 0.3s;
-      border: 2px solid #6e9fc0;
-    }
-
-    .locked-door {
-      filter: drop-shadow(0 0 12px #ff444488);
-    }
-
-    .unlocked-door {
-      filter: drop-shadow(0 0 25px #00ff99);
-      border-color: #00ffaa;
-    }
-
-    .puzzle-panel {
-      background: #081929dd;
       border-radius: 28px;
-      padding: 14px 12px;
-      border: 1px solid #2c5877;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .puzzle-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #9ac7e7;
-    }
-
-    .puzzle-question {
-      font-size: 0.95rem;
-      font-weight: 600;
-      background: #0b1f32;
-      padding: 12px;
-      border-radius: 20px;
-      color: #ceecff;
-      border-left: 5px solid #00b7ff;
-      line-height: 1.5;
-    }
-
-    .input-area {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    input[type="text"] {
-      background: #0f253b;
-      border: 2px solid #2c5a7a;
-      border-radius: 30px;
-      padding: 14px 18px;
+      padding: 14px 16px;
       font-size: 1rem;
       color: white;
       outline: none;
-      caret-color: #00ccff;
+      width: 100%;
+      transition: 0.3s;
     }
-
-    input[type="text"]:focus {
-      border-color: #00b7ff;
-      box-shadow: 0 0 12px #0077ff;
+    .reg-form input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0,229,255,0.2);
     }
-
-    input:disabled {
-      opacity: 0.6;
-      background: #1a2e40;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      background: linear-gradient(135deg, #006994, #003d5e);
-      border: none;
-      color: white;
-      font-weight: bold;
-      padding: 13px 14px;
-      border-radius: 40px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      box-shadow: 0 5px 0 #00141f, 0 8px 16px black;
-      transition: 0.1s linear;
-      border: 1px solid #00a3cc;
-      flex: 1;
-      min-width: 70px;
-      touch-action: manipulation;
-    }
-
-    button:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #00141f, 0 5px 10px black;
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      transform: none;
-      box-shadow: 0 3px 0 #00141f;
-      pointer-events: none;
-    }
-
-    .hint-text {
-      font-size: 0.75rem;
-      color: #b8dff5;
-      font-style: italic;
-      background: #0a1f3055;
-      padding: 6px 10px;
-      border-radius: 14px;
-    }
-
-    .progress {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .error-msg {
+      color: var(--red);
       font-size: 0.8rem;
-      background: #0c2338;
-      border-radius: 30px;
-      padding: 8px 14px;
-      flex-wrap: wrap;
-    }
-
-    .key-icons {
-      display: flex;
-      gap: 2px;
-      font-size: 0.85rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .message {
-      font-weight: 600;
       text-align: center;
       min-height: 20px;
-      color: #ffd966;
-      font-size: 0.85rem;
     }
+    .btn {
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 14px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.15s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      text-align: center;
+    }
+    .btn:active { transform: scale(0.95); }
+    .btn-green {
+      background: linear-gradient(135deg, #00aa44, #006633);
+      border: 2px solid #00cc66;
+      box-shadow: 0 4px 0 #00331a;
+      font-size: 1rem;
+    }
+    .btn-blue {
+      background: linear-gradient(135deg, #006994, #003d5e);
+      border: 1px solid #00a3cc;
+      box-shadow: 0 3px 0 #00141f;
+    }
+    .btn-red {
+      background: linear-gradient(135deg, #884444, #553333);
+      border: 1px solid #996666;
+      box-shadow: 0 3px 0 #331111;
+    }
+    .btn:disabled { opacity: 0.4; pointer-events: none; }
 
-    .reset-area {
+    /* ========== LEVEL SELECT ========== */
+    #levelScreen {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      padding: 8px 4px;
+    }
+    .story-box {
+      background: rgba(15,25,40,0.9);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 0.85rem;
+      color: #ccddee;
+      border-left: 4px solid var(--gold);
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .level-card {
+      background: rgba(10,30,48,0.85);
+      border-radius: 18px;
+      padding: 14px;
+      border: 2px solid rgba(44,88,119,0.5);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 8px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .level-card:active { transform: scale(0.96); background: #0d2840; }
+    .level-card.locked {
+      opacity: 0.4;
+      pointer-events: none;
+      border-color: #554433;
+    }
+    .level-card.unlocked {
+      border-color: var(--green);
+      box-shadow: 0 0 15px rgba(0,255,136,0.15);
+    }
+    .level-card.completed {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(255,215,0,0.2);
+    }
+    .level-info { display: flex; flex-direction: column; gap: 2px; }
+    .level-name { font-weight: 700; font-size: 1rem; }
+    .level-desc { font-size: 0.7rem; color: #99bbcc; }
+    .level-icon { font-size: 2.5rem; min-width: 45px; text-align: center; }
+    .rank-box {
+      background: rgba(26,51,68,0.8);
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      text-align: center;
+      border: 1px solid rgba(255,215,0,0.2);
+    }
+
+    /* ========== GAME ========== */
+    #gameScreen {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5,18,32,0.9);
+      border-radius: 30px;
+      padding: 8px 14px;
+      border: 1px solid rgba(0,166,255,0.3);
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 4px;
     }
-
-    .small-btn {
-      background: #1b3349;
-      border: 1px solid #4f7b99;
-      padding: 10px 18px;
-      font-size: 0.75rem;
-      box-shadow: none;
+    .player-tag {
+      font-size: 0.7rem;
+      color: #9ac7e7;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
     }
-
-    .logout-btn {
-      background: #4a2020;
-      border: 1px solid #996666;
-      padding: 10px 18px;
-      font-size: 0.75rem;
-      box-shadow: none;
-      color: #ffcccc;
+    .level-tag {
+      background: var(--gold);
+      color: #000;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 16px;
+      font-size: 0.65rem;
     }
-
-    .pagination {
+    .status-tag {
+      background: var(--cyan);
+      color: #001a26;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+    }
+    .timer-row {
+      background: rgba(10,30,48,0.9);
+      border-radius: 24px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-size: 0.8rem;
+      gap: 6px;
+      border: 2px solid var(--gold);
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #ffcc66;
     }
+    .timer-warning { border-color: var(--red) !important; color: #ff7777 !important; animation: pulse 0.5s infinite alternate; }
+    @keyframes pulse { from{transform:scale(1)} to{transform:scale(1.05)} }
+    .timer-bar {
+      width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
+    }
+    .timer-bar-fill {
+      height: 100%; background: linear-gradient(90deg, var(--green), var(--gold), var(--red));
+      transition: width 1s linear; border-radius: 2px;
+    }
+    .door-box {
+      background: rgba(26,47,66,0.8); border-radius: 18px; padding: 4px; border: 2px solid rgba(61,98,124,0.5);
+    }
+    .door {
+      background: radial-gradient(circle at 25% 25%, #4e7a9e, #0a1826);
+      border-radius: 16px; height: 55px; display: flex; align-items: center; justify-content: center;
+      font-size: 2.3rem; transition: 0.4s; border: 2px solid #6e9fc0;
+    }
+    .door.locked { filter: drop-shadow(0 0 10px rgba(255,68,68,0.4)); }
+    .door.unlocked { filter: drop-shadow(0 0 25px var(--green)); border-color: var(--green); }
+    .progress-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(12,35,56,0.8); border-radius: 22px; padding: 6px 12px; font-size: 0.75rem;
+    }
+    .key-icons { display: flex; gap: 1px; font-size: 0.7rem; flex-wrap: wrap; }
+    .puzzle-box {
+      background: rgba(8,25,41,0.9); border-radius: 20px; padding: 12px 10px;
+      border: 1px solid rgba(44,88,119,0.5); display: flex; flex-direction: column; gap: 8px;
+    }
+    .puzzle-subject {
+      font-size: 0.7rem; color: #9ac7e7; background: rgba(0,183,255,0.15);
+      padding: 3px 8px; border-radius: 10px; display: inline-block;
+    }
+    .puzzle-question {
+      font-size: 0.9rem; font-weight: 600; background: rgba(11,31,50,0.8);
+      padding: 10px; border-radius: 14px; color: #ceecff; border-left: 3px solid var(--cyan); line-height: 1.5;
+    }
+    .puzzle-question.flash-green { border-left-color: var(--green); background: rgba(0,255,136,0.1); }
+    .puzzle-question.flash-red { animation: shake 0.4s ease; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+    }
+    .game-input {
+      background: #0f253b; border: 2px solid #2c5a7a; border-radius: 26px;
+      padding: 12px 14px; font-size: 0.9rem; color: white; outline: none; width: 100%;
+    }
+    .game-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+    .btn-row { display: flex; gap: 6px; }
+    .hint-text { font-size: 0.7rem; color: #b8dff5; font-style: italic; min-height: 16px; }
+    .message-text { font-weight: 600; text-align: center; min-height: 18px; font-size: 0.8rem; }
+    .msg-good { color: var(--green); }
+    .msg-bad { color: var(--red); }
+    .nav-row { display: flex; gap: 6px; justify-content: center; align-items: center; }
+    .nav-btn { flex: 0; min-width: 40px; padding: 8px 12px; font-size: 0.7rem; background: #1b3b52; }
+    .footer-row { display: flex; gap: 6px; }
 
-    .nav-btn {
-      background: #1b3b52;
-      padding: 8px 14px;
-      font-size: 0.75rem;
-      box-shadow: 0 3px 0 #00141f;
-      min-width: 50px;
+    /* ========== BADGE OVERLAY ========== */
+    .badge-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center;
+    }
+    .badge-popup {
+      background: linear-gradient(135deg, #0f2a3f, #1a3350); border-radius: 20px;
+      padding: 24px; text-align: center; border: 3px solid var(--gold);
+      animation: popIn 0.5s ease; max-width: 290px; width: 90%;
+    }
+    @keyframes popIn {
+      0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1}
+    }
+    .badge-icon-lg { font-size: 4rem; }
+    .badge-title-lg { font-size: 1.3rem; font-weight: 700; color: var(--gold); margin: 8px 0; }
+    .badge-desc-lg { font-size: 0.8rem; color: #ccc; margin-bottom: 12px; }
+
+    /* Floating particles */
+    .particles-box {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999;
+    }
+    .particle {
+      position: absolute; font-size: 1.2rem; animation: floatUp 2s ease-out forwards; opacity: 0;
+    }
+    @keyframes floatUp {
+      0%{transform:translateY(0) scale(0);opacity:1} 100%{transform:translateY(-120px) scale(1);opacity:0}
+    }
+    .score-pop {
+      position: fixed; top: 40%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 2.5rem; font-weight: 800; pointer-events: none; z-index: 100;
+      animation: popUp 1.5s ease forwards;
+    }
+    @keyframes popUp {
+      0%{opacity:1;transform:translate(-50%,-50%) scale(0.5)} 50%{opacity:1;transform:translate(-50%,-80%) scale(1.3)}
+      100%{opacity:0;transform:translate(-50%,-150%) scale(0.8)}
     }
   </style>
 </head>
 <body>
-  <div class="game-container" id="gameContainer">
-    <!-- ==================== SCREEN REGISTRASI ==================== -->
-    <div class="registration-screen" id="registrationScreen">
-      <div class="reg-title">
-        <span>🔐</span> Escape Room
-        <span>💻</span>
-      </div>
-      <div class="reg-subtitle">Lab Informatika • 15 Teka-Teki • 25 Detik/Soal</div>
-      
+
+  <div class="particles-box" id="particlesBox"></div>
+  <div class="score-pop" id="scorePop" style="display:none;"></div>
+
+  <div class="game-wrapper" id="gameWrapper">
+    <!-- ====== REGISTRATION ====== -->
+    <div id="regScreen">
+      <div class="reg-icon">🔐</div>
+      <div class="reg-title">Escape Room Informatika</div>
+      <div style="text-align:center;font-size:0.8rem;color:#8899aa;">🏆 3 Level • 30 Teka-teki • 25 Detik/Soal</div>
       <div class="reg-form">
-        <label for="playerName">👤 Nama Lengkap</label>
-        <input type="text" id="playerName" placeholder="Masukkan nama kamu..." autocomplete="off" enterkeyhint="next">
-        
-        <label for="playerClass">🏫 Kelas</label>
-        <input type="text" id="playerClass" placeholder="Contoh: X RPL 1 / X TKJ 2" autocomplete="off" enterkeyhint="done">
-        
-        <div class="error-reg" id="errorReg"></div>
-        
-        <button class="start-btn" id="startGameBtn">
-          🚀 MULAI ESCAPE ROOM
-        </button>
-      </div>
-      
-      <div style="text-align: center; font-size: 0.7rem; color: #668899;">
-        ⏱️ 25 detik per soal • ❌ Gagal jika waktu habis • 🔄 Bisa diulang
+        <label for="inpName">👤 Nama Lengkap</label>
+        <input type="text" id="inpName" placeholder="Masukkan nama kamu..." autocomplete="off" enterkeyhint="next">
+        <label for="inpClass">🏫 Kelas</label>
+        <input type="text" id="inpClass" placeholder="Contoh: X RPL 1" autocomplete="off" enterkeyhint="done">
+        <div class="error-msg" id="errorMsg"></div>
+        <button class="btn btn-green" id="btnStart">🚀 MASUK LAB</button>
       </div>
     </div>
 
-    <!-- ==================== SCREEN GAME ==================== -->
-    <div class="game-screen" id="gameScreen">
-      <div class="room-header">
-        <div class="player-info">
-          <span>👤</span>
-          <span class="player-name-display" id="playerNameDisplay">-</span>
-          <span>|</span>
-          <span>🏫</span>
-          <span id="playerClassDisplay">-</span>
+    <!-- ====== LEVEL SELECT ====== -->
+    <div id="levelScreen">
+      <div class="story-box" id="storyBox">📜 Selamat datang! Pilih level untuk memulai.</div>
+      <div id="levelCards"></div>
+      <div class="rank-box" id="rankBox">🏅 Ranking: 🔰 Pemula</div>
+      <button class="btn btn-red" id="btnLogout">🚪 Ganti Peserta</button>
+    </div>
+
+    <!-- ====== GAME ====== -->
+    <div id="gameScreen">
+      <div class="game-header">
+        <div class="player-tag">
+          <span>👤 <b id="dName">-</b></span>
+          <span>🏫 <span id="dClass">-</span></span>
+          <span class="level-tag" id="dLevel">Level 1</span>
         </div>
-        <span class="status-badge" id="statusText">TERKUNCI</span>
+        <span class="status-tag" id="dStatus">TERKUNCI</span>
       </div>
-
-      <!-- Timer -->
-      <div class="timer-box" id="timerBox">
-        <span>⏱️</span>
-        <span id="timerDisplay">25</span>
-        <span>detik</span>
+      <div class="timer-row" id="timerBox">
+        <span>⏱️</span><span id="timerNum">25</span><span>detik</span>
       </div>
-
-      <div class="door-visual">
-        <div class="door locked-door" id="doorElement">🚪🔒</div>
+      <div class="timer-bar"><div class="timer-bar-fill" id="timerFill" style="width:100%;"></div></div>
+      <div class="door-box">
+        <div class="door locked" id="doorEl">🚪🔒</div>
       </div>
-
-      <div class="progress">
-        <span>🔑 Progress</span>
+      <div class="progress-row">
+        <span>🔑</span>
         <span class="key-icons" id="keyIcons"></span>
-        <span id="counterLabel">0/15</span>
+        <span id="counterLabel">0/10</span>
       </div>
-
-      <div class="puzzle-panel" id="puzzlePanel">
-        <div class="puzzle-header">
-          <span id="puzzleSubject">Algoritma</span>
-          <span id="puzzleNumber">Soal 1/15</span>
+      <div class="puzzle-box">
+        <div>
+          <span class="puzzle-subject" id="pSubject">-</span>
+          <span style="float:right;font-size:0.7rem;color:#9ac7e7;" id="pNumber">Soal 1/10</span>
         </div>
-        <div class="puzzle-question" id="questionDisplay">🧩 Teka-teki muncul di sini</div>
-        <div class="input-area">
-          <input type="text" id="answerInput" placeholder="Ketik jawaban..." autocomplete="off" enterkeyhint="done">
-          <div class="btn-group">
-            <button id="submitBtn">🔍 Jawab</button>
-            <button id="hintBtn">💡 Hint</button>
-          </div>
+        <div class="puzzle-question" id="pQuestion">🧩</div>
+        <input type="text" class="game-input" id="inpAnswer" placeholder="Ketik jawaban..." autocomplete="off" enterkeyhint="done">
+        <div class="btn-row">
+          <button class="btn btn-blue" id="btnSubmit">🔍 Jawab</button>
+          <button class="btn btn-blue" id="btnHint">💡 Hint</button>
         </div>
         <div class="hint-text" id="hintDisplay"></div>
-        <div class="message" id="messageDisplay"></div>
-        <div class="pagination">
-          <button class="nav-btn" id="prevBtn">◀ Sebelumnya</button>
-          <span id="pageIndicator">1/15</span>
-          <button class="nav-btn" id="nextBtn">Berikutnya ▶</button>
+        <div class="message-text" id="messageDisplay"></div>
+        <div class="nav-row">
+          <button class="btn btn-blue nav-btn" id="btnPrev">◀</button>
+          <span id="pageIndicator" style="font-size:0.8rem;">1/10</span>
+          <button class="btn btn-blue nav-btn" id="btnNext">▶</button>
         </div>
       </div>
-
-      <div class="reset-area">
-        <button class="logout-btn" id="logoutBtn">🚪 Ganti Peserta</button>
-        <button class="small-btn" id="resetButton">🔄 Ulangi Game</button>
+      <div class="footer-row">
+        <button class="btn btn-blue" id="btnBackLevel" style="flex:1;">📋 Pilih Level</button>
+        <button class="btn btn-blue" id="btnReset" style="flex:1;">🔄 Ulangi</button>
       </div>
     </div>
   </div>
 
+  <!-- ====== BADGE OVERLAY ====== -->
+  <div class="badge-overlay" id="badgeOverlay">
+    <div class="badge-popup">
+      <div class="badge-icon-lg" id="badgeIcon">🏆</div>
+      <div class="badge-title-lg" id="badgeTitle">Badge!</div>
+      <div class="badge-desc-lg" id="badgeDesc">Deskripsi</div>
+      <button class="btn btn-green" id="btnBadgeClose">✅ LANJUTKAN!</button>
+    </div>
+  </div>
+
   <script>
-    (function() {
-      // ========== DATA TEKA-TEKI ==========
-      const puzzles = [
-        { id: 0, subject: "Algoritma", question: "➰ Dalam pseudocode: x = 10, jika x > 5 maka x = x * 2, selain itu x = x - 3. Berapa x akhir?", answer: "20", hints: ["10 > 5 benar, jadi 10 × 2", "Jawaban angka"] },
-        { id: 1, subject: "Bilangan Biner", question: "🔢 Konversi biner 1101 ke desimal.", answer: "13", hints: ["8+4+0+1", "Hasil antara 12-14"] },
-        { id: 2, subject: "Logika", question: "🧠 Gerbang OR: A=0, B=1, output? (0/1)", answer: "1", hints: ["OR = 1 jika ada input 1", "Karena B=1, output 1"] },
-        { id: 3, subject: "Hardware", question: "🖥️ Kepanjangan RAM? (Bahasa Inggris)", answer: "random access memory", alternativeAnswers: ["random access memory", "ram"], hints: ["Random Access Memory", "3 kata"] },
-        { id: 4, subject: "Jaringan", question: "🌐 Singkatan dari LAN?", answer: "local area network", alternativeAnswers: ["local area network", "lan"], hints: ["Local Area Network", "Jaringan area lokal"] },
-        { id: 5, subject: "Pemrograman", question: "💻 Perintah Python untuk menampilkan teks?", answer: "print", hints: ["Dimulai dengan p", "5 huruf"] },
-        { id: 6, subject: "Algoritma", question: "🔄 Struktur perulangan selama kondisi benar? (while/for/if)", answer: "while", hints: ["Dimulai dengan w", "5 huruf"] },
-        { id: 7, subject: "Bilangan Biner", question: "🔢 Desimal 255 dalam biner 8 bit?", answer: "11111111", hints: ["Semua bit 1", "8 kali angka 1"] },
-        { id: 8, subject: "Keamanan Data", question: "🔐 Proses mengubah data jadi kode rahasia?", answer: "enkripsi", alternativeAnswers: ["encryption", "enkripsi"], hints: ["Dimulai E", "Lawannya dekripsi"] },
-        { id: 9, subject: "Sistem Operasi", question: "🪟 OS Microsoft paling populer?", answer: "windows", hints: ["Dimulai W", "Bukan Linux/macOS"] },
-        { id: 10, subject: "Algoritma", question: "🔢 Algoritma pengurutan tukar elemen bersebelahan? (bubble/quick/merge)", answer: "bubble", hints: ["Gelembung", "Bubble sort"] },
-        { id: 11, subject: "Basis Data", question: "🗃️ Singkatan DBMS?", answer: "database management system", alternativeAnswers: ["database management system", "dbms"], hints: ["Database Management System", "4 kata"] },
-        { id: 12, subject: "Pemrograman Web", question: "🌍 Bahasa markup halaman web?", answer: "html", alternativeAnswers: ["html", "hypertext markup language"], hints: ["H...", "HyperText Markup Language"] },
-        { id: 13, subject: "Logika", question: "🧮 Gerbang NOT: input 0, output? (0/1)", answer: "1", hints: ["NOT membalik", "0 jadi 1"] },
-        { id: 14, subject: "Informatika Umum", question: "📱 Penyimpanan permanen di komputer? (HDD/SSD)", answer: "hardisk", alternativeAnswers: ["hardisk", "harddisk", "hard drive", "ssd", "hdd"], hints: ["H... atau S...", "Penyimpanan sekunder"] }
-      ];
-
-      const TOTAL_PUZZLES = puzzles.length;
-      const TIME_LIMIT = 25;
-
-      // ========== STATE ==========
-      let playerName = '';
-      let playerClass = '';
-      let solvedStatus = new Array(TOTAL_PUZZLES).fill(false);
-      let failedStatus = new Array(TOTAL_PUZZLES).fill(false);
-      let currentPuzzleIndex = 0;
-      let timeLeft = TIME_LIMIT;
-      let timerInterval = null;
-      let messageTimeout = null;
-
-      // ========== DOM ELEMENTS ==========
-      // Registrasi
-      const registrationScreen = document.getElementById('registrationScreen');
-      const gameScreen = document.getElementById('gameScreen');
-      const playerNameInput = document.getElementById('playerName');
-      const playerClassInput = document.getElementById('playerClass');
-      const errorReg = document.getElementById('errorReg');
-      const startGameBtn = document.getElementById('startGameBtn');
-
-      // Game
-      const playerNameDisplay = document.getElementById('playerNameDisplay');
-      const playerClassDisplay = document.getElementById('playerClassDisplay');
-      const doorEl = document.getElementById('doorElement');
-      const statusText = document.getElementById('statusText');
-      const timerBox = document.getElementById('timerBox');
-      const timerDisplay = document.getElementById('timerDisplay');
-      const keyIconsEl = document.getElementById('keyIcons');
-      const counterLabel = document.getElementById('counterLabel');
-      const puzzleSubject = document.getElementById('puzzleSubject');
-      const puzzleNumber = document.getElementById('puzzleNumber');
-      const questionDisplay = document.getElementById('questionDisplay');
-      const answerInput = document.getElementById('answerInput');
-      const submitBtn = document.getElementById('submitBtn');
-      const hintBtn = document.getElementById('hintBtn');
-      const hintDisplay = document.getElementById('hintDisplay');
-      const messageDisplay = document.getElementById('messageDisplay');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const pageIndicator = document.getElementById('pageIndicator');
-      const resetBtn = document.getElementById('resetButton');
-      const logoutBtn = document.getElementById('logoutBtn');
-
-      // ========== REGISTRASI ==========
-      function validateRegistration() {
-        const name = playerNameInput.value.trim();
-        const kelas = playerClassInput.value.trim();
-        
-        if (name === '' && kelas === '') {
-          errorReg.textContent = '⚠️ Nama dan kelas harus diisi!';
-          return false;
-        }
-        if (name === '') {
-          errorReg.textContent = '⚠️ Nama lengkap harus diisi!';
-          playerNameInput.focus();
-          return false;
-        }
-        if (kelas === '') {
-          errorReg.textContent = '⚠️ Kelas harus diisi!';
-          playerClassInput.focus();
-          return false;
-        }
-        if (name.length < 3) {
-          errorReg.textContent = '⚠️ Nama minimal 3 karakter!';
-          playerNameInput.focus();
-          return false;
-        }
-        errorReg.textContent = '';
-        return true;
+  (function(){
+    // ========== DATA ==========
+    const levelData = [
+      {
+        id:0, name:"Level 1: Dasar Informatika", icon:"🔰", short:"Level 1",
+        story:"📜 Kamu terbangun di Lab Informatika dasar. Kuasai algoritma, biner, dan logika untuk membuka pintu pertama!",
+        badge:{icon:"🥉",title:"Badge Perunggu",desc:"Kamu menguasai dasar informatika!"},
+        puzzles:[
+          {subject:"Algoritma",question:"➰ x=10, jika x>5 maka x=x*2, selain itu x=x-3. Nilai x akhir?",answer:"20",hints:["10>5 benar, 10×2","Jawaban: 20"]},
+          {subject:"Bilangan Biner",question:"🔢 Konversi biner 1101 ke desimal.",answer:"13",hints:["8+4+0+1","13"]},
+          {subject:"Logika",question:"🧠 Gerbang AND: A=1, B=0. Output? (0/1)",answer:"0",hints:["AND butuh semua 1","Karena ada 0, output 0"]},
+          {subject:"Algoritma",question:"🔄 Perulangan selama kondisi benar? (while/for/if)",answer:"while",hints:["Dimulai w","5 huruf"]},
+          {subject:"Bilangan Biner",question:"🔢 Desimal 8 dalam biner 4 bit?",answer:"1000",hints:["1×8+0×4+0×2+0×1","1000"]},
+          {subject:"Logika",question:"🧠 Gerbang OR: A=0, B=0. Output?",answer:"0",hints:["OR butuh minimal satu 1","Semua 0, output 0"]},
+          {subject:"Algoritma",question:"📊 Simbol flowchart untuk proses berbentuk?",answer:"persegi panjang",alt:["rectangle"],hints:["Bentuk kotak memanjang","Rectangle"]},
+          {subject:"Bilangan Biner",question:"🔢 Biner 1111 ke desimal?",answer:"15",hints:["8+4+2+1","15"]},
+          {subject:"Logika",question:"🧮 Gerbang NOT: input 1, output?",answer:"0",hints:["NOT membalik","1 jadi 0"]},
+          {subject:"Algoritma",question:"🔍 Pencarian berurutan disebut?",answer:"sequential search",alt:["linear search"],hints:["Sequential Search","Linear Search"]}
+        ]
+      },
+      {
+        id:1, name:"Level 2: Hardware & Jaringan", icon:"⚙️", short:"Level 2",
+        story:"📜 Hebat! Kamu masuk ruang server. Kuasai hardware dan jaringan untuk lanjut!",
+        badge:{icon:"🥈",title:"Badge Perak",desc:"Kamu ahli hardware dan jaringan!"},
+        puzzles:[
+          {subject:"Hardware",question:"🖥️ CPU singkatan dari?",answer:"central processing unit",alt:["cpu"],hints:["Central Processing Unit","3 kata"]},
+          {subject:"Jaringan",question:"🌐 LAN singkatan dari?",answer:"local area network",alt:["lan"],hints:["Local Area Network","Jaringan lokal"]},
+          {subject:"Hardware",question:"💾 RAM singkatan dari?",answer:"random access memory",alt:["ram"],hints:["Random Access Memory","Memori akses acak"]},
+          {subject:"Jaringan",question:"🌍 Jaringan seluruh dunia?",answer:"internet",hints:["Bukan LAN/WAN","7 huruf"]},
+          {subject:"Hardware",question:"🖨️ Alat cetak dokumen?",answer:"printer",hints:["Dimulai P","7 huruf"]},
+          {subject:"Jaringan",question:"📶 Pemancar sinyal WiFi?",answer:"access point",alt:["router"],hints:["Access Point","Router"]},
+          {subject:"Hardware",question:"💻 Otak komputer disebut?",answer:"prosesor",alt:["processor","cpu"],hints:["Processor","CPU"]},
+          {subject:"Jaringan",question:"🔒 WAN singkatan dari?",answer:"wide area network",alt:["wan"],hints:["Wide Area Network","Jaringan luas"]},
+          {subject:"Hardware",question:"🖱️ Alat penunjuk di meja?",answer:"mouse",hints:["Dimulai M","5 huruf"]},
+          {subject:"Jaringan",question:"📡 Kabel LAN umum disebut?",answer:"utp",alt:["lan","kabel lan"],hints:["UTP","Unshielded Twisted Pair"]}
+        ]
+      },
+      {
+        id:2, name:"Level 3: Pemrograman & Keamanan", icon:"💎", short:"Level 3",
+        story:"📜 Level terakhir! Ruang server utama. Hanya master kode yang bisa keluar!",
+        badge:{icon:"🥇",title:"Badge Emas",desc:"Kamu MASTER INFORMATIKA! Pintu terbuka!"},
+        puzzles:[
+          {subject:"Pemrograman",question:"💻 Python: perintah output?",answer:"print",hints:["Dimulai p","5 huruf"]},
+          {subject:"Keamanan",question:"🔐 Ubah data jadi kode rahasia?",answer:"enkripsi",alt:["encryption"],hints:["Dimulai E","Lawannya dekripsi"]},
+          {subject:"Web",question:"🌍 Bahasa markup web?",answer:"html",alt:["hypertext markup language"],hints:["H...","HyperText Markup Language"]},
+          {subject:"Keamanan",question:"🔑 Kata sandi (Inggris)?",answer:"password",hints:["Dimulai P","8 huruf"]},
+          {subject:"Pemrograman",question:"📦 Tipe data bilangan bulat?",answer:"integer",alt:["int"],hints:["int","integer"]},
+          {subject:"Basis Data",question:"🗃️ DBMS singkatan?",answer:"database management system",alt:["dbms"],hints:["Database Management System","4 kata"]},
+          {subject:"Pemrograman",question:"🔁 Perulangan jumlah pasti? (for/while)",answer:"for",hints:["Dimulai f","3 huruf"]},
+          {subject:"Keamanan",question:"🦠 Program jahat menggandakan diri?",answer:"virus",alt:["worm"],hints:["Dimulai V","5 huruf"]},
+          {subject:"Web",question:"🎨 Bahasa styling web?",answer:"css",hints:["Cascading Style Sheets","3 huruf"]},
+          {subject:"Keamanan",question:"🛡️ Sistem keamanan jaringan?",answer:"firewall",hints:["Tembok api","Dimulai F"]}
+        ]
       }
+    ];
 
-      function startGame() {
-        if (!validateRegistration()) return;
+    const TIME_LIMIT = 25;
 
-        playerName = playerNameInput.value.trim();
-        playerClass = playerClassInput.value.trim();
+    // ========== STATE ==========
+    let playerName = '', playerClass = '';
+    let completedLevels = [false, false, false];
+    let currentLevel = 0;
+    let solved = [], failed = [];
+    let puzzleIdx = 0;
+    let timeLeft = TIME_LIMIT;
+    let timerId = null;
+    let msgId = null;
 
-        // Update display
-        playerNameDisplay.textContent = playerName;
-        playerClassDisplay.textContent = playerClass;
+    // ========== DOM GETTERS ==========
+    const $ = (id) => document.getElementById(id);
+    const regScreen = $('regScreen');
+    const levelScreen = $('levelScreen');
+    const gameScreen = $('gameScreen');
+    const badgeOverlay = $('badgeOverlay');
+    const particlesBox = $('particlesBox');
+    const scorePop = $('scorePop');
 
-        // Reset game state
-        solvedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        failedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        currentPuzzleIndex = 0;
-        if (messageTimeout) clearTimeout(messageTimeout);
-        messageDisplay.textContent = '';
-        hintDisplay.textContent = '';
-        timerBox.classList.remove('timer-warning');
-
-        // Switch screen
-        registrationScreen.style.display = 'none';
-        gameScreen.style.display = 'flex';
-
-        // Init game
-        updateUI();
-        answerInput.focus();
-        showMessage(`Selamat datang, ${playerName}! Selesaikan 15 teka-teki!`, true);
-      }
-
-      function logoutToRegistration() {
-        stopTimer();
-        if (messageTimeout) clearTimeout(messageTimeout);
-        
-        // Clear game state
-        solvedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        failedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        currentPuzzleIndex = 0;
-        playerName = '';
-        playerClass = '';
-        
-        // Clear inputs
-        answerInput.value = '';
-        messageDisplay.textContent = '';
-        hintDisplay.textContent = '';
-        timerBox.classList.remove('timer-warning');
-        timerDisplay.textContent = TIME_LIMIT;
-
-        // Switch screen
-        gameScreen.style.display = 'none';
-        registrationScreen.style.display = 'flex';
-        
-        // Clear reg form
-        playerNameInput.value = '';
-        playerClassInput.value = '';
-        errorReg.textContent = '';
-        playerNameInput.focus();
-      }
-
-      // ========== TIMER ==========
-      function stopTimer() {
-        if (timerInterval) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-        }
-      }
-
-      function startTimer() {
-        stopTimer();
-        if (solvedStatus[currentPuzzleIndex] || failedStatus[currentPuzzleIndex]) {
-          timerDisplay.textContent = '--';
-          timerBox.classList.remove('timer-warning');
-          return;
-        }
-        if (solvedStatus.every(v => v)) {
-          timerDisplay.textContent = '✓';
-          timerBox.classList.remove('timer-warning');
-          return;
-        }
-
-        timeLeft = TIME_LIMIT;
-        timerDisplay.textContent = timeLeft;
-        timerBox.classList.remove('timer-warning');
-
-        timerInterval = setInterval(() => {
-          timeLeft--;
-          timerDisplay.textContent = timeLeft;
-
-          if (timeLeft <= 5) {
-            timerBox.classList.add('timer-warning');
-          } else {
-            timerBox.classList.remove('timer-warning');
-          }
-
-          if (timeLeft <= 0) {
-            stopTimer();
-            timerBox.classList.remove('timer-warning');
-            handleTimeout();
-          }
-        }, 1000);
-      }
-
-      function handleTimeout() {
-        if (solvedStatus[currentPuzzleIndex] || failedStatus[currentPuzzleIndex]) return;
-        if (solvedStatus.every(v => v)) return;
-
-        failedStatus[currentPuzzleIndex] = true;
-        showMessage('⏰ Waktu habis! Soal ini gagal. Coba soal lain.', false);
-        updateUI();
-        checkGameOver();
-      }
-
-      function checkGameOver() {
-        const allDone = solvedStatus.every((v, i) => v || failedStatus[i]);
-        if (allDone && !solvedStatus.every(v => v)) {
-          showMessage('😞 Beberapa soal gagal. Pintu tetap terkunci. Ulangi game untuk coba lagi.', false);
-          stopTimer();
-          timerDisplay.textContent = '✗';
-        }
-      }
-
-      // ========== UI ==========
-      function updateUI() {
-        const solvedCount = solvedStatus.filter(v => v).length;
-        const failedCount = failedStatus.filter(v => v).length;
-
-        // Ikon progress
-        let icons = '';
-        for (let i = 0; i < TOTAL_PUZZLES; i++) {
-          if (solvedStatus[i]) icons += '🔑';
-          else if (failedStatus[i]) icons += '❌';
-          else icons += '⚪';
-        }
-        keyIconsEl.textContent = icons;
-        counterLabel.textContent = `${solvedCount}/${TOTAL_PUZZLES} benar`;
-
-        // Pintu
-        if (solvedCount === TOTAL_PUZZLES) {
-          doorEl.classList.remove('locked-door');
-          doorEl.classList.add('unlocked-door');
-          doorEl.textContent = '🚪✨';
-          statusText.textContent = 'TERBUKA';
-          statusText.style.background = '#00c853';
-          stopTimer();
-          timerDisplay.textContent = '✓';
-        } else {
-          doorEl.classList.add('locked-door');
-          doorEl.classList.remove('unlocked-door');
-          doorEl.textContent = '🚪🔒';
-          statusText.textContent = 'TERKUNCI';
-          statusText.style.background = '#00c8ff';
-        }
-
-        // Puzzle display
-        const puzzle = puzzles[currentPuzzleIndex];
-        puzzleSubject.textContent = puzzle.subject;
-        puzzleNumber.textContent = `Soal ${currentPuzzleIndex+1}/${TOTAL_PUZZLES}`;
-        questionDisplay.textContent = puzzle.question;
-        pageIndicator.textContent = `${currentPuzzleIndex+1}/${TOTAL_PUZZLES}`;
-
-        const isSolved = solvedStatus[currentPuzzleIndex];
-        const isFailed = failedStatus[currentPuzzleIndex];
-        const allSolved = solvedStatus.every(v => v);
-
-        if (allSolved) {
-          answerInput.disabled = true;
-          submitBtn.disabled = true;
-          hintBtn.disabled = true;
-          answerInput.value = '';
-          answerInput.placeholder = 'Semua terjawab!';
-          hintDisplay.textContent = '🎉 Pintu terbuka! Selamat!';
-        } else if (isSolved) {
-          answerInput.disabled = true;
-          submitBtn.disabled = true;
-          hintBtn.disabled = false;
-          answerInput.value = puzzle.answer;
-          hintDisplay.textContent = '✅ Soal ini sudah benar.';
-        } else if (isFailed) {
-          answerInput.disabled = true;
-          submitBtn.disabled = true;
-          hintBtn.disabled = true;
-          answerInput.value = '';
-          answerInput.placeholder = 'Waktu habis – soal gagal';
-          hintDisplay.textContent = '❌ Soal ini gagal (waktu habis).';
-        } else {
-          answerInput.disabled = false;
-          submitBtn.disabled = false;
-          hintBtn.disabled = false;
-          answerInput.value = '';
-          answerInput.placeholder = 'Ketik jawaban...';
-          hintDisplay.textContent = '';
-        }
-
-        // Timer control
-        if (!allSolved && !isSolved && !isFailed) {
-          startTimer();
-        } else if (allSolved || isSolved || isFailed) {
-          stopTimer();
-          if (allSolved) timerDisplay.textContent = '✓';
-          else if (isFailed) timerDisplay.textContent = '✗';
-          else timerDisplay.textContent = '--';
-          timerBox.classList.remove('timer-warning');
-        }
-
-        checkGameOver();
-      }
-
-      function checkAnswer(userAnswer, puzzle) {
-        const norm = userAnswer.trim().toLowerCase();
-        if (norm === '') return false;
-        if (norm === puzzle.answer.toLowerCase()) return true;
-        if (puzzle.alternativeAnswers) {
-          return puzzle.alternativeAnswers.some(a => norm === a.toLowerCase());
-        }
-        return false;
-      }
-
-      function showMessage(text, good = true) {
-        if (messageTimeout) clearTimeout(messageTimeout);
-        messageDisplay.textContent = text;
-        messageDisplay.style.color = good ? '#b9f5b0' : '#ffaaaa';
-        messageTimeout = setTimeout(() => { messageDisplay.textContent = ''; }, 3000);
-      }
-
-      function handleSubmit() {
-        if (solvedStatus.every(v => v)) {
-          showMessage('Pintu sudah terbuka! 🎉', true);
-          return;
-        }
-        if (solvedStatus[currentPuzzleIndex] || failedStatus[currentPuzzleIndex]) {
-          showMessage('Soal ini tidak bisa dijawab lagi.', false);
-          return;
-        }
-
-        const puzzle = puzzles[currentPuzzleIndex];
-        const ans = answerInput.value.trim();
-        if (ans === '') {
-          showMessage('⚠️ Masukkan jawaban dulu.', false);
-          return;
-        }
-
-        if (checkAnswer(ans, puzzle)) {
-          stopTimer();
-          solvedStatus[currentPuzzleIndex] = true;
-          showMessage('✅ Benar! Kunci bertambah.', true);
-          updateUI();
-          if (solvedStatus.every(v => v)) {
-            showMessage(`🎉 SELAMAT ${playerName}! Semua teka-teki terpecahkan! Pintu terbuka!`, true);
-          }
-        } else {
-          showMessage('❌ Jawaban salah. Coba lagi.', false);
-          answerInput.value = '';
-          answerInput.focus();
-        }
-      }
-
-      function showHint() {
-        if (solvedStatus.every(v => v)) {
-          hintDisplay.textContent = '🎯 Semua selesai!';
-          return;
-        }
-        if (failedStatus[currentPuzzleIndex]) {
-          hintDisplay.textContent = '❌ Soal sudah gagal.';
-          return;
-        }
-        const puzzle = puzzles[currentPuzzleIndex];
-        if (puzzle.hints && puzzle.hints.length > 0) {
-          hintDisplay.textContent = `💬 Hint: ${puzzle.hints[Math.floor(Math.random() * puzzle.hints.length)]}`;
-        } else {
-          hintDisplay.textContent = 'ℹ️ Tidak ada hint.';
-        }
-      }
-
-      function goToPuzzle(index) {
-        if (index < 0 || index >= TOTAL_PUZZLES) return;
-        stopTimer();
-        currentPuzzleIndex = index;
-        updateUI();
-        if (!solvedStatus[currentPuzzleIndex] && !failedStatus[currentPuzzleIndex] && !solvedStatus.every(v=>v)) {
-          answerInput.focus();
-        }
-      }
-
-      function resetGame() {
-        stopTimer();
-        solvedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        failedStatus = new Array(TOTAL_PUZZLES).fill(false);
-        currentPuzzleIndex = 0;
-        if (messageTimeout) clearTimeout(messageTimeout);
-        messageDisplay.textContent = '';
-        hintDisplay.textContent = '';
-        timerBox.classList.remove('timer-warning');
-        updateUI();
-        answerInput.focus();
-        showMessage(`🔄 Game di-reset. Semangat ${playerName}! 15 soal, 25 detik/soal.`, true);
-      }
-
-      // ========== EVENT LISTENERS ==========
-      // Registrasi
-      startGameBtn.addEventListener('click', startGame);
-      
-      playerNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          playerClassInput.focus();
-        }
-      });
-      
-      playerClassInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          startGame();
-        }
-      });
-
-      // Validasi real-time
-      playerNameInput.addEventListener('input', () => {
-        if (playerNameInput.value.trim().length >= 3) {
-          errorReg.textContent = '';
-        }
-      });
-      
-      playerClassInput.addEventListener('input', () => {
-        if (playerClassInput.value.trim() !== '') {
-          errorReg.textContent = '';
-        }
-      });
-
-      // Game
-      submitBtn.addEventListener('click', handleSubmit);
-      hintBtn.addEventListener('click', showHint);
-      resetBtn.addEventListener('click', resetGame);
-      logoutBtn.addEventListener('click', logoutToRegistration);
-      prevBtn.addEventListener('click', () => goToPuzzle(currentPuzzleIndex - 1));
-      nextBtn.addEventListener('click', () => goToPuzzle(currentPuzzleIndex + 1));
-      
-      answerInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleSubmit();
-        }
-      });
-
-      // ========== INIT ==========
-      // Tampilkan layar registrasi pertama kali
-      registrationScreen.style.display = 'flex';
+    // ========== SCREEN SWITCH ==========
+    function showReg() {
+      regScreen.style.display = 'flex';
+      levelScreen.style.display = 'none';
       gameScreen.style.display = 'none';
-      playerNameInput.focus();
-      
-      document.addEventListener('touchstart', function(){}, {passive: true});
-    })();
+      badgeOverlay.style.display = 'none';
+    }
+    function showLevel() {
+      regScreen.style.display = 'none';
+      levelScreen.style.display = 'flex';
+      gameScreen.style.display = 'none';
+      badgeOverlay.style.display = 'none';
+      renderLevelCards();
+      updateRank();
+    }
+    function showGame() {
+      regScreen.style.display = 'none';
+      levelScreen.style.display = 'none';
+      gameScreen.style.display = 'flex';
+      badgeOverlay.style.display = 'none';
+    }
+
+    // ========== REGISTRATION ==========
+    $('btnStart').addEventListener('click', function(){
+      const n = $('inpName').value.trim();
+      const k = $('inpClass').value.trim();
+      $('errorMsg').textContent = '';
+      if(!n){ $('errorMsg').textContent='⚠️ Nama harus diisi!'; $('inpName').focus(); return; }
+      if(!k){ $('errorMsg').textContent='⚠️ Kelas harus diisi!'; $('inpClass').focus(); return; }
+      if(n.length<3){ $('errorMsg').textContent='⚠️ Nama minimal 3 karakter!'; $('inpName').focus(); return; }
+      playerName = n; playerClass = k;
+      completedLevels = [false, false, false];
+      $('dName').textContent = playerName;
+      $('dClass').textContent = playerClass;
+      $('inpName').value = ''; $('inpClass').value = '';
+      $('storyBox').textContent = '📜 Selamat datang, '+playerName+'! Pilih level untuk memulai.';
+      showLevel();
+    });
+
+    // Enter key support
+    $('inpName').addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); $('inpClass').focus(); } });
+    $('inpClass').addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); $('btnStart').click(); } });
+
+    // ========== LEVEL SELECT ==========
+    function renderLevelCards(){
+      let html = '';
+      levelData.forEach((lv, i)=>{
+        let cls='locked', icon='🔒', desc='🔒 Selesaikan level sebelumnya';
+        if(i===0 || completedLevels[i-1]){
+          if(completedLevels[i]){ cls='completed'; icon='✅'; desc='✅ Level selesai!'; }
+          else { cls='unlocked'; icon=lv.icon; desc='10 Soal • 25 Detik/Soal'; }
+        }
+        html += '<div class="level-card '+cls+'" data-level="'+i+'" id="cardLevel'+i+'">'+
+          '<div class="level-info"><span class="level-name">'+lv.name+'</span><span class="level-desc">'+desc+'</span></div>'+
+          '<div class="level-icon">'+icon+'</div></div>';
+      });
+      $('levelCards').innerHTML = html;
+
+      // Attach click events langsung
+      levelData.forEach((lv, i)=>{
+        const card = document.getElementById('cardLevel'+i);
+        if(card){
+          card.onclick = function(){
+            if(i>0 && !completedLevels[i-1]){
+              $('storyBox').textContent = '🔒 Level terkunci! Selesaikan level sebelumnya.';
+              return;
+            }
+            startLevel(i);
+          };
+        }
+      });
+    }
+
+    function updateRank(){
+      const total = completedLevels.filter(v=>v).length;
+      let rank = '🔰 Pemula';
+      if(total===1) rank='🥉 Perunggu';
+      if(total===2) rank='🥈 Perak';
+      if(total===3) rank='🥇 Master Informatika';
+      $('rankBox').textContent = '🏅 Ranking: '+rank;
+    }
+
+    $('btnLogout').addEventListener('click', function(){
+      stopTimer();
+      completedLevels=[false,false,false];
+      playerName=''; playerClass='';
+      showReg();
+      $('inpName').focus();
+    });
+
+    // ========== START LEVEL ==========
+    function startLevel(index){
+      currentLevel = index;
+      const lv = levelData[index];
+      solved = new Array(lv.puzzles.length).fill(false);
+      failed = new Array(lv.puzzles.length).fill(false);
+      puzzleIdx = 0;
+      $('dLevel').textContent = lv.short;
+      stopTimer();
+      if(msgId) clearTimeout(msgId);
+      $('messageDisplay').textContent = '';
+      $('hintDisplay').textContent = '';
+      $('timerBox').classList.remove('timer-warning');
+      $('timerFill').style.width = '100%';
+      updateGameUI();
+      showGame();
+      setTimeout(function(){ $('inpAnswer').focus(); }, 200);
+    }
+
+    // ========== TIMER ==========
+    function stopTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+    function startTimer(){
+      stopTimer();
+      if(solved[puzzleIdx] || failed[puzzleIdx] || solved.every(v=>v)){
+        $('timerNum').textContent = '--';
+        $('timerFill').style.width = '0%';
+        return;
+      }
+      timeLeft = TIME_LIMIT;
+      $('timerNum').textContent = timeLeft;
+      $('timerFill').style.width = '100%';
+      $('timerBox').classList.remove('timer-warning');
+      timerId = setInterval(function(){
+        timeLeft--;
+        $('timerNum').textContent = timeLeft;
+        $('timerFill').style.width = ((timeLeft/TIME_LIMIT)*100)+'%';
+        if(timeLeft<=5) $('timerBox').classList.add('timer-warning');
+        if(timeLeft<=0){ stopTimer(); handleTimeout(); }
+      }, 1000);
+    }
+
+    function handleTimeout(){
+      if(solved[puzzleIdx] || failed[puzzleIdx]) return;
+      failed[puzzleIdx] = true;
+      showMsg('⏰ Waktu habis! Soal gagal. 😞', false);
+      if(navigator.vibrate) navigator.vibrate([100,50,100]);
+      updateGameUI();
+    }
+
+    // ========== GAME UI ==========
+    function updateGameUI(){
+      const lv = levelData[currentLevel];
+      const puzzles = lv.puzzles;
+      const total = puzzles.length;
+      const done = solved.filter(v=>v).length;
+
+      let icons = '';
+      for(let i=0; i<total; i++){
+        if(solved[i]) icons+='🔑';
+        else if(failed[i]) icons+='❌';
+        else icons+='⚪';
+      }
+      $('keyIcons').textContent = icons;
+      $('counterLabel').textContent = done+'/'+total;
+
+      const door = $('doorEl');
+      const status = $('dStatus');
+      if(done===total){
+        door.classList.remove('locked'); door.classList.add('unlocked');
+        door.textContent='🚪✨'; status.textContent='TERBUKA'; status.style.background='#00c853';
+        stopTimer(); $('timerNum').textContent='✓'; $('timerFill').style.width='100%';
+        $('timerFill').style.background='var(--green)';
+        if(!completedLevels[currentLevel]){
+          completedLevels[currentLevel]=true;
+          updateRank();
+          spawnParticles('🎉', 20);
+          showBadge(lv.badge);
+        }
+      } else {
+        door.classList.add('locked'); door.classList.remove('unlocked');
+        door.textContent='🚪🔒'; status.textContent='TERKUNCI'; status.style.background='#00c8ff';
+        $('timerFill').style.background='linear-gradient(90deg, var(--green), var(--gold), var(--red))';
+      }
+
+      const p = puzzles[puzzleIdx];
+      $('pSubject').textContent = p.subject;
+      $('pNumber').textContent = 'Soal '+(puzzleIdx+1)+'/'+total;
+      $('pQuestion').textContent = p.question;
+      $('pageIndicator').textContent = (puzzleIdx+1)+'/'+total;
+
+      const inp = $('inpAnswer');
+      const sBtn = $('btnSubmit');
+      const hBtn = $('btnHint');
+      const hDisp = $('hintDisplay');
+      const qDisp = $('pQuestion');
+
+      qDisp.classList.remove('flash-green','flash-red');
+
+      if(solved[puzzleIdx]){
+        inp.disabled=true; sBtn.disabled=true; hBtn.disabled=false;
+        inp.value=p.answer; hDisp.textContent='✅ Sudah benar!';
+      } else if(failed[puzzleIdx]){
+        inp.disabled=true; sBtn.disabled=true; hBtn.disabled=true;
+        inp.value=''; inp.placeholder='Waktu habis'; hDisp.textContent='❌ Gagal.';
+      } else if(done===total){
+        inp.disabled=true; sBtn.disabled=true; hBtn.disabled=true;
+        hDisp.textContent='🎉 Level selesai!';
+      } else {
+        inp.disabled=false; sBtn.disabled=false; hBtn.disabled=false;
+        inp.value=''; inp.placeholder='Ketik jawaban...'; hDisp.textContent='';
+      }
+
+      if(!solved.every(v=>v) && !solved[puzzleIdx] && !failed[puzzleIdx]) startTimer();
+      else { stopTimer(); if(solved.every(v=>v)){ $('timerNum').textContent='✓'; $('timerFill').style.width='100%'; } }
+    }
+
+    function checkAns(ans, p){
+      const n = ans.trim().toLowerCase();
+      if(!n) return false;
+      if(n===p.answer.toLowerCase()) return true;
+      if(p.alt) return p.alt.some(a=>n===a.toLowerCase());
+      return false;
+    }
+
+    function showMsg(text, good){
+      if(msgId) clearTimeout(msgId);
+      const m = $('messageDisplay');
+      m.textContent = text;
+      m.className = 'message-text '+(good?'msg-good':'msg-bad');
+      msgId = setTimeout(function(){ m.textContent=''; m.className='message-text'; }, 2500);
+    }
+
+    function spawnParticles(emoji, count){
+      for(let i=0; i<count; i++){
+        const p = document.createElement('span');
+        p.className='particle';
+        p.textContent=emoji;
+        p.style.left=Math.random()*100+'%';
+        p.style.top=(50+Math.random()*30)+'%';
+        p.style.animationDuration=(1+Math.random()*2)+'s';
+        particlesBox.appendChild(p);
+        setTimeout(function(){ p.remove(); }, 2500);
+      }
+    }
+
+    function showScorePop(text, color){
+      scorePop.textContent=text;
+      scorePop.style.color=color||'var(--green)';
+      scorePop.style.display='block';
+      scorePop.style.animation='none';
+      scorePop.offsetHeight;
+      scorePop.style.animation='popUp 1.5s ease forwards';
+      setTimeout(function(){ scorePop.style.display='none'; }, 1500);
+    }
+
+    // ========== GAME ACTIONS ==========
+    $('btnSubmit').addEventListener('click', function(){
+      if(solved.every(v=>v)) return;
+      if(solved[puzzleIdx] || failed[puzzleIdx]){ showMsg('Soal tidak bisa dijawab lagi.', false); return; }
+      const ans = $('inpAnswer').value.trim();
+      if(!ans){ showMsg('⚠️ Masukkan jawaban dulu!', false); if(navigator.vibrate) navigator.vibrate(50); return; }
+      const p = levelData[currentLevel].puzzles[puzzleIdx];
+      if(checkAns(ans, p)){
+        stopTimer();
+        solved[puzzleIdx]=true;
+        const speed = TIME_LIMIT - timeLeft;
+        const bonus = Math.max(0, Math.floor((TIME_LIMIT-speed)/5));
+        $('pQuestion').classList.add('flash-green');
+        showMsg('✅ Benar! +'+(10+bonus)+' poin ⚡', true);
+        showScorePop('+'+(10+bonus));
+        spawnParticles('✨', 10);
+        if(navigator.vibrate) navigator.vibrate(50);
+        updateGameUI();
+        if(solved.every(v=>v)){
+          showMsg('🎉 SELAMAT! Level selesai! 🌟', true);
+          spawnParticles('🌟', 20);
+        }
+      } else {
+        $('pQuestion').classList.add('flash-red');
+        showMsg('❌ Jawaban salah. Coba lagi!', false);
+        if(navigator.vibrate) navigator.vibrate([80,50,80]);
+        $('inpAnswer').value='';
+        $('inpAnswer').focus();
+      }
+    });
+
+    $('btnHint').addEventListener('click', function(){
+      if(solved.every(v=>v)) return;
+      if(failed[puzzleIdx]) return;
+      const hints = levelData[currentLevel].puzzles[puzzleIdx].hints;
+      if(hints && hints.length) $('hintDisplay').textContent = '💬 Hint: '+hints[Math.floor(Math.random()*hints.length)];
+    });
+
+    $('btnPrev').addEventListener('click', function(){
+      if(puzzleIdx>0){ stopTimer(); puzzleIdx--; updateGameUI(); }
+    });
+    $('btnNext').addEventListener('click', function(){
+      if(puzzleIdx < levelData[currentLevel].puzzles.length-1){ stopTimer(); puzzleIdx++; updateGameUI(); }
+    });
+
+    $('btnReset').addEventListener('click', function(){
+      stopTimer();
+      const total = levelData[currentLevel].puzzles.length;
+      solved=new Array(total).fill(false); failed=new Array(total).fill(false);
+      puzzleIdx=0;
+      if(msgId) clearTimeout(msgId);
+      $('messageDisplay').textContent=''; $('hintDisplay').textContent='';
+      $('timerBox').classList.remove('timer-warning');
+      $('timerFill').style.width='100%';
+      updateGameUI();
+      $('inpAnswer').focus();
+      showMsg('🔄 Level diulang. Semangat! 💪', true);
+    });
+
+    $('btnBackLevel').addEventListener('click', function(){
+      stopTimer();
+      if(msgId) clearTimeout(msgId);
+      $('messageDisplay').textContent='';
+      updateRank();
+      renderLevelCards();
+      showLevel();
+    });
+
+    $('inpAnswer').addEventListener('keypress', function(e){
+      if(e.key==='Enter'){ e.preventDefault(); $('btnSubmit').click(); }
+    });
+
+    // ========== BADGE ==========
+    function showBadge(badge){
+      $('badgeIcon').textContent=badge.icon;
+      $('badgeTitle').textContent=badge.title;
+      $('badgeDesc').textContent=badge.desc;
+      badgeOverlay.style.display='flex';
+    }
+    $('btnBadgeClose').addEventListener('click', function(){
+      badgeOverlay.style.display='none';
+      updateRank();
+      renderLevelCards();
+      showLevel();
+    });
+
+    // ========== INIT ==========
+    showReg();
+    $('inpName').focus();
+    document.addEventListener('touchstart', function(){}, {passive:true});
+  })();
   </script>
 </body>
 </html>
